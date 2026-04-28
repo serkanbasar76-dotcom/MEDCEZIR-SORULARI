@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 
-# --- TEMİZLENMİŞ VE OPTİMİZE EDİLMİŞ 30 SORU ---
+# --- TEMİZLENMİŞ VE YENİ SORULARLA GÜNCELLENMİŞ 32 SORU ---
 RAW_QUESTIONS = [
     {"question": "Yeniayda hangi gelgit çeşidi oluşur?", "options": ["Neap tide", "Spring tide", "Diurnal tide", "Mixed tide"], "answer_index": 1},
     {"question": "Ay ve güneş dünyaya göre 90˚ doğrultuda bulunduğunda hangi gelgit oluşur?", "options": ["Mixed tide", "Spring tide", "Neap tide", "Semidiurnal tide"], "answer_index": 2},
@@ -32,7 +32,10 @@ RAW_QUESTIONS = [
     {"question": "ATT cetvellerinde (British Admiralty) hangi zaman kullanılır?", "options": ["LMT", "GMT", "SMT", "LZT"], "answer_index": 1},
     {"question": "ATT Part-I’de hangi limanlara ait listeler bulunur?", "options": ["Tali Limanlar", "Sadece nehir limanları", "Askeri limanlar", "Ana Limanlar (Standard Ports)"], "answer_index": 3},
     {"question": "ATT Part-II’de hangi limanlara ait listeler bulunur?", "options": ["Tali Limanlar (Secondary Ports)", "Ana Limanlar", "Balıkçı limanları", "Sadece Avrupa limanları"], "answer_index": 0},
-    {"question": "Java Denizi ve Vietnam gibi tropik bölgelerde hangi gelgit çeşidi görülür?", "options": ["Semidiurnal tide", "Mixed tide", "Spring tide", "Diurnal Tide (Günlük)"], "answer_index": 3}
+    {"question": "Java Denizi ve Vietnam gibi tropik bölgelerde hangi gelgit çeşidi görülür?", "options": ["Semidiurnal tide", "Mixed tide", "Spring tide", "Diurnal Tide (Günlük)"], "answer_index": 3},
+    # YENİ EKLENENLER:
+    {"question": "Spring-neap eğrisi cetvelleri için aşağıdakilerden hangisi söylenebilir?", "options": ["Sadece nehir limanları içindir", "Tali limanlar için düzenlenmiştir", "Sadece ana limanlar için verilmiş cetvellerdir", "Okyanus geçişleri için kullanılır"], "answer_index": 2},
+    {"question": "Pasifik, Avustralya kıyıları, Kuzey Avrupa ve Doğu Asya bölgelerinde yaygın görülen gelgit çeşidi hangisidir?", "options": ["Diurnal Tide", "Semidiurnal Tide", "Mixed Tide (Karışık)", "Spring Tide"], "answer_index": 2}
 ]
 
 # --- SESSION STATE ---
