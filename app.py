@@ -43,16 +43,27 @@ QUESTIONS = [
 # --- SAYFA AYARLARI ---
 st.set_page_config(page_title="Serkan Hoca Eğitim Portalı", layout="centered")
 
-# --- CSS: EKRANA SIĞDIRMA VE RENK DÜZENLEMESİ ---
+# --- CSS: MODERN UI VE GÖRÜNÜRLÜK AYARLARI ---
 st.markdown("""
     <style>
-    /* Üst ve alt boşlukları azaltarak ekrana sığdıralım */
     .block-container {
         padding-top: 1rem !important;
         padding-bottom: 1rem !important;
     }
+    /* Soru sayacı badge tasarımı */
+    .q-badge {
+        background-color: #34495e;
+        color: white !important;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    /* Genel yazı rengini beyaz arka plana göre koyu gri yapalım */
     html, body, [class*="st-"] {
-        color: #1a1a1a !important;
+        color: #2c3e50 !important;
     }
     .stButton>button {
         width: 100%;
@@ -65,6 +76,7 @@ st.markdown("""
         margin-bottom: 2px;
         text-align: left;
         padding-left: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .stButton>button:hover {
         background-color: #3498db;
@@ -76,13 +88,14 @@ st.markdown("""
         background: linear-gradient(135deg, #2c3e50, #3498db);
         border-radius: 12px;
         margin-bottom: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
     .logo-box h2, .logo-box p { color: white !important; margin: 0; }
     .question-card {
-        background-color: #fcfcfc;
+        background-color: #f8f9fa;
         padding: 15px;
         border-radius: 8px;
-        border-left: 5px solid #3498db;
+        border-left: 5px solid #2c3e50;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         margin-bottom: 10px;
     }
@@ -131,8 +144,8 @@ elif st.session_state.app_state == "QUIZ":
     total_q = len(st.session_state.questions)
     curr_q = st.session_state.current_index + 1
 
-    # Soru Sayacı (1/35 gibi) - Madde 11
-    st.write(f"**Soru: {curr_q} / {total_q}**")
+    # Soru Sayacı (Badge Tasarımı) - Görünürlük Sorunu Çözüldü
+    st.markdown(f'<div class="q-badge">SORU: {curr_q} / {total_q}</div>', unsafe_allow_html=True)
     
     # Soru Kartı
     st.markdown(f'<div class="question-card"><b>{q["question"]}</b></div>', unsafe_allow_html=True)
@@ -158,6 +171,7 @@ elif st.session_state.app_state == "QUIZ":
                 st.session_state.app_state = "RESULTS"
                 st.rerun()
 
+    st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🚪 Kapat ve Sakla"):
         st.session_state.app_state = "START"
         st.rerun()
