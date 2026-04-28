@@ -43,7 +43,7 @@ QUESTIONS = [
 # --- SAYFA AYARLARI ---
 st.set_page_config(page_title="Serkan Hoca Eğitim Portalı", layout="centered")
 
-# --- CSS: MODERN UI VE GÖRÜNÜRLÜK AYARLARI ---
+# --- CSS: ANALİZ SAYFASI VE METİN GÖRÜNÜRLÜĞÜ ---
 st.markdown("""
     <style>
     .block-container {
@@ -61,10 +61,24 @@ st.markdown("""
         display: inline-block;
         margin-bottom: 10px;
     }
-    /* Genel yazı rengini beyaz arka plana göre koyu gri yapalım */
+    /* Genel yazı rengi ayarı */
     html, body, [class*="st-"] {
         color: #2c3e50 !important;
     }
+    /* Analiz Sayfası Expander ve Yazıları İçin Beyaz Renk Zorlaması */
+    .stExpander div {
+        color: #ffffff !important;
+    }
+    .stExpander {
+        background-color: #2c3e50 !important;
+        border-radius: 8px;
+        margin-bottom: 5px;
+    }
+    .stExpander summary p {
+        color: #ffffff !important;
+        font-weight: bold;
+    }
+    /* Buton Tasarımları */
     .stButton>button {
         width: 100%;
         border-radius: 10px;
@@ -88,7 +102,6 @@ st.markdown("""
         background: linear-gradient(135deg, #2c3e50, #3498db);
         border-radius: 12px;
         margin-bottom: 15px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
     .logo-box h2, .logo-box p { color: white !important; margin: 0; }
     .question-card {
@@ -97,6 +110,14 @@ st.markdown("""
         border-radius: 8px;
         border-left: 5px solid #2c3e50;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        margin-bottom: 10px;
+    }
+    /* Sonuç Metinleri Başlıkları */
+    .result-text {
+        color: #ffffff !important;
+        background-color: #1a1a1a;
+        padding: 15px;
+        border-radius: 10px;
         margin-bottom: 10px;
     }
     </style>
@@ -144,13 +165,9 @@ elif st.session_state.app_state == "QUIZ":
     total_q = len(st.session_state.questions)
     curr_q = st.session_state.current_index + 1
 
-    # Soru Sayacı (Badge Tasarımı) - Görünürlük Sorunu Çözüldü
     st.markdown(f'<div class="q-badge">SORU: {curr_q} / {total_q}</div>', unsafe_allow_html=True)
-    
-    # Soru Kartı
     st.markdown(f'<div class="question-card"><b>{q["question"]}</b></div>', unsafe_allow_html=True)
 
-    # Şıklar
     labels = ["A", "B", "C", "D"]
     for i, opt in enumerate(q["options"]):
         if st.button(f"{labels[i]}) {opt}", key=f"opt_{st.session_state.current_index}_{i}"):
@@ -184,15 +201,22 @@ elif st.session_state.app_state == "RESULTS":
         st.snow()
         st.markdown("<h2 style='text-align: center; color: #2ecc71;'>🎉 TEBRİKLER HARİKASIN 🎉</h2>", unsafe_allow_html=True)
     
-    st.info(f"Başarı Oranı: %{perc:.1f} | Doğru: {st.session_state.score} | Yanlış: {len(st.session_state.questions)-st.session_state.score}")
+    # Analiz Başlığı - Beyaz metinli panel
+    st.markdown(f"""
+        <div class="result-text">
+            <h3 style='color: white !important;'>Sınav Sonucu: %{perc:.1f}</h3>
+            <p style='color: white !important;'>Doğru: {st.session_state.score} | Yanlış: {len(st.session_state.questions)-st.session_state.score}</p>
+        </div>
+    """, unsafe_allow_html=True)
     
+    # Soru detayları (Beyaz yazılar için özel CSS uygulanmış expanderlar)
     for i, item in enumerate(st.session_state.user_answers):
         icon = "✅" if item["res"] else "❌"
         with st.expander(f"Soru {i+1}: {icon}"):
-            st.write(f"**Soru:** {item['q']}")
-            st.write(f"Cevabın: {item['u_ans']}")
+            st.markdown(f"<span style='color: white;'><b>Soru:</b> {item['q']}</span>", unsafe_allow_html=True)
+            st.markdown(f"<span style='color: white;'><b>Cevabın:</b> {item['u_ans']}</span>", unsafe_allow_html=True)
             if not item["res"]:
-                st.write(f"Doğru: :green[{item['c_ans']}]")
+                st.markdown(f"<span style='color: #2ecc71;'><b>Doğru Cevap:</b> {item['c_ans']}</span>", unsafe_allow_html=True)
 
     if st.button("🔄 Yeniden Başla"):
         start_fresh()
