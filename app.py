@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 
-# --- TÜM 35 SORU (VERİ TABANI) ---
+# --- TÜM 35 SORU ---
 QUESTIONS = [
     {"question": "Yeniayda hangi gelgit çeşidi oluşur?", "options": ["Neap tide", "Spring tide", "Diurnal tide", "Mixed tide"], "answer": "B"},
     {"question": "Ay ve güneş dünyaya göre 90˚ doğrultuda bulunduğunda hangi gelgit oluşur?", "options": ["Mixed tide", "Spring tide", "Neap tide", "Semidiurnal tide"], "answer": "C"},
@@ -43,25 +43,28 @@ QUESTIONS = [
 # --- SAYFA AYARLARI ---
 st.set_page_config(page_title="Serkan Hoca Eğitim Portalı", layout="centered")
 
-# --- KOYU YAZI VE ŞIK TASARIM (CSS) ---
+# --- CSS: EKRANA SIĞDIRMA VE RENK DÜZENLEMESİ ---
 st.markdown("""
     <style>
-    /* Ana yazı rengini siyah yapalım ki okunsun */
+    /* Üst ve alt boşlukları azaltarak ekrana sığdıralım */
+    .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
     html, body, [class*="st-"] {
         color: #1a1a1a !important;
     }
     .stButton>button {
         width: 100%;
-        border-radius: 12px;
-        height: 3.5em;
+        border-radius: 10px;
+        height: 3em;
         background-color: #ffffff;
         color: #2c3e50 !important;
-        border: 2px solid #3498db;
-        font-size: 16px;
-        font-weight: 500;
-        margin-bottom: 5px;
+        border: 1.5px solid #3498db;
+        font-size: 15px;
+        margin-bottom: 2px;
         text-align: left;
-        padding-left: 20px;
+        padding-left: 15px;
     }
     .stButton>button:hover {
         background-color: #3498db;
@@ -69,25 +72,24 @@ st.markdown("""
     }
     .logo-box {
         text-align: center;
-        padding: 25px;
+        padding: 15px;
         background: linear-gradient(135deg, #2c3e50, #3498db);
-        border-radius: 15px;
-        color: white !important;
-        margin-bottom: 20px;
-    }
-    .logo-box h1, .logo-box p { color: white !important; }
-    .question-card {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        border-left: 6px solid #3498db;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        border-radius: 12px;
         margin-bottom: 15px;
+    }
+    .logo-box h2, .logo-box p { color: white !important; margin: 0; }
+    .question-card {
+        background-color: #fcfcfc;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 5px solid #3498db;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        margin-bottom: 10px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# --- OTURUM YÖNETİMİ ---
+# --- SESSION STATE ---
 if 'initialized' not in st.session_state:
     st.session_state.questions = QUESTIONS.copy()
     random.shuffle(st.session_state.questions)
@@ -105,17 +107,16 @@ def start_fresh():
     st.session_state.user_answers = []
     st.session_state.app_state = "QUIZ"
 
-# --- LOGO (MADDE 5) ---
-st.markdown("""
+# --- LOGO ---
+st.markdown(f"""
     <div class="logo-box">
-        <h1 style='margin:0;'>🌊 GELGİT SINAVI</h1>
-        <p style='margin:0; font-size: 18px;'>SERKAN HOCA İLE</p>
+        <h2>🌊 GELGİT SINAVI</h2>
+        <p>SERKAN HOCA İLE</p>
     </div>
 """, unsafe_allow_html=True)
 
-# --- ANA AKIŞ ---
+# --- AKIŞ ---
 if st.session_state.app_state == "START":
-    st.write("### Hoş Geldiniz")
     if st.session_state.current_index > 0:
         if st.button("🚀 Kaldığım Yerden Devam Et"):
             st.session_state.app_state = "QUIZ"
@@ -127,16 +128,16 @@ if st.session_state.app_state == "START":
 
 elif st.session_state.app_state == "QUIZ":
     q = st.session_state.questions[st.session_state.current_index]
+    total_q = len(st.session_state.questions)
+    curr_q = st.session_state.current_index + 1
+
+    # Soru Sayacı (1/35 gibi) - Madde 11
+    st.write(f"**Soru: {curr_q} / {total_q}**")
     
-    # İlerleme (Progress)
-    progress_val = (st.session_state.current_index + 1) / len(st.session_state.questions)
-    st.progress(progress_val)
-    st.write(f"Soru {st.session_state.current_index + 1} / {len(st.session_state.questions)}")
+    # Soru Kartı
+    st.markdown(f'<div class="question-card"><b>{q["question"]}</b></div>', unsafe_allow_html=True)
 
-    # Soru Gösterimi
-    st.markdown(f'<div class="question-card"><h4>{q["question"]}</h4></div>', unsafe_allow_html=True)
-
-    # Şıklar (A, B, C, D) - Madde 1 ve 6
+    # Şıklar
     labels = ["A", "B", "C", "D"]
     for i, opt in enumerate(q["options"]):
         if st.button(f"{labels[i]}) {opt}", key=f"opt_{st.session_state.current_index}_{i}"):
@@ -150,36 +151,34 @@ elif st.session_state.app_state == "QUIZ":
                 "res": is_correct
             })
 
-            if st.session_state.current_index < len(st.session_state.questions) - 1:
+            if st.session_state.current_index < total_q - 1:
                 st.session_state.current_index += 1
                 st.rerun()
             else:
                 st.session_state.app_state = "RESULTS"
                 st.rerun()
 
-    st.divider()
-    if st.button("🚪 Sınavdan Çık / Kaldığım Yeri Sakla"):
+    if st.button("🚪 Kapat ve Sakla"):
         st.session_state.app_state = "START"
         st.rerun()
 
 elif st.session_state.app_state == "RESULTS":
     perc = (st.session_state.score / len(st.session_state.questions)) * 100
     
-    if perc >= 80: # Madde 7
+    if perc >= 80:
         st.balloons()
         st.snow()
-        st.markdown("<h1 style='text-align: center; color: #2ecc71;'>🎉 TEBRİKLER HARİKASIN 🎉</h1>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; color: #2ecc71;'>🎉 TEBRİKLER HARİKASIN 🎉</h2>", unsafe_allow_html=True)
     
-    st.success(f"Sınav Tamamlandı! Başarı Oranınız: %{perc:.1f}")
+    st.info(f"Başarı Oranı: %{perc:.1f} | Doğru: {st.session_state.score} | Yanlış: {len(st.session_state.questions)-st.session_state.score}")
     
-    # Analiz Sayfası (Madde 9)
     for i, item in enumerate(st.session_state.user_answers):
         icon = "✅" if item["res"] else "❌"
         with st.expander(f"Soru {i+1}: {icon}"):
-            st.markdown(f"**Soru:** {item['q']}")
-            st.write(f"Senin Cevabın: {item['u_ans']}")
+            st.write(f"**Soru:** {item['q']}")
+            st.write(f"Cevabın: {item['u_ans']}")
             if not item["res"]:
-                st.markdown(f"**Doğru Cevap:** :green[{item['c_ans']}]")
+                st.write(f"Doğru: :green[{item['c_ans']}]")
 
     if st.button("🔄 Yeniden Başla"):
         start_fresh()
