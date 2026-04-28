@@ -10,7 +10,7 @@ QUESTIONS = [
     {"question": "Bir ay günü içerisinde 2 defa yükselme ve 2 defa alçalma yaşanıyorsa bu hangisidir?", "options": ["Spring tide", "Semidiurnal tide", "Neap tide", "Diurnal tide"], "answer": "B"},
     {"question": "Bir ay günü içerisinde düzensizliklerin yaşandığı gelgitler hangi adla anılır?", "options": ["Slack water", "Semidiurnal tide", "Mixed tide", "Neap tide"], "answer": "C"},
     {"question": "Spring tide için aşağıdakilerden hangisi doğrudur?", "options": ["Zayıf gelgitler olur.", "Kuvvetli gelgitler olur.", "Sadece kutuplarda görülür.", "Ay ve güneş 90 derece açıdadır."], "answer": "B"},
-    {"question": "Ay, Güneş ve Dünya’nın aynı doğrultuda bulunduğu gelgit evresi hangisidir?", "options": ["Spring tide", "Neap tide", "Mixed tide", "Diurnal tide"], "answer": "A"},
+    {"question": "Ay, Güneş and Dünya’nın aynı doğrultuda bulunduğu gelgit evresi hangisidir?", "options": ["Spring tide", "Neap tide", "Mixed tide", "Diurnal tide"], "answer": "A"},
     {"question": "Ayın Dolunay ve Yeniay evrelerinde hangi tip gelgit oluşur?", "options": ["Neap tide", "Semidiurnal tide", "Spring tide", "Slack water"], "answer": "C"},
     {"question": "Neap tide (ölü gelgit) için aşağıdakilerden hangisi söylenebilir?", "options": ["Kuvvetli gelgitler olur.", "Zayıf gelgitler olur.", "Ay ve dünya aynı hizadadır.", "En yüksek su seviyesidir."], "answer": "B"},
     {"question": "Ay ve Güneş'in Dünya'ya göre 90˚ doğrultuda bulunduğu durum hangi terimle ifade edilir?", "options": ["Spring tide", "Diurnal tide", "Neap tide", "Mixed tide"], "answer": "C"},
@@ -50,7 +50,6 @@ st.markdown("""
         padding-top: 1rem !important;
         padding-bottom: 1rem !important;
     }
-    /* Soru sayacı badge tasarımı */
     .q-badge {
         background-color: #34495e;
         color: white !important;
@@ -61,24 +60,23 @@ st.markdown("""
         display: inline-block;
         margin-bottom: 10px;
     }
-    /* Genel yazı rengi ayarı */
     html, body, [class*="st-"] {
         color: #2c3e50 !important;
     }
-    /* Analiz Sayfası Expander ve Yazıları İçin Beyaz Renk Zorlaması */
+    /* Analiz Sayfası Expander Tasarımı */
     .stExpander div {
         color: #ffffff !important;
     }
     .stExpander {
         background-color: #2c3e50 !important;
         border-radius: 8px;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
     }
     .stExpander summary p {
         color: #ffffff !important;
         font-weight: bold;
+        font-size: 16px;
     }
-    /* Buton Tasarımları */
     .stButton>button {
         width: 100%;
         border-radius: 10px;
@@ -90,7 +88,6 @@ st.markdown("""
         margin-bottom: 2px;
         text-align: left;
         padding-left: 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .stButton>button:hover {
         background-color: #3498db;
@@ -109,17 +106,17 @@ st.markdown("""
         padding: 15px;
         border-radius: 8px;
         border-left: 5px solid #2c3e50;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         margin-bottom: 10px;
     }
-    /* Sonuç Metinleri Başlıkları */
-    .result-text {
-        color: #ffffff !important;
+    .result-panel {
+        color: white !important;
         background-color: #1a1a1a;
-        padding: 15px;
+        padding: 20px;
         border-radius: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        text-align: center;
     }
+    .result-panel h3, .result-panel p { color: white !important; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -201,22 +198,26 @@ elif st.session_state.app_state == "RESULTS":
         st.snow()
         st.markdown("<h2 style='text-align: center; color: #2ecc71;'>🎉 TEBRİKLER HARİKASIN 🎉</h2>", unsafe_allow_html=True)
     
-    # Analiz Başlığı - Beyaz metinli panel
+    # Sonuç Paneli
     st.markdown(f"""
-        <div class="result-text">
-            <h3 style='color: white !important;'>Sınav Sonucu: %{perc:.1f}</h3>
-            <p style='color: white !important;'>Doğru: {st.session_state.score} | Yanlış: {len(st.session_state.questions)-st.session_state.score}</p>
+        <div class="result-panel">
+            <h3>Sınav Analizi: %{perc:.1f}</h3>
+            <p>Doğru Sayısı: {st.session_state.score} | Yanlış Sayısı: {len(st.session_state.questions)-st.session_state.score}</p>
+            <p style='font-size: 14px; opacity: 0.8;'>Aşağıda sadece yanlış cevapladığınız sorular gösterilmektedir.</p>
         </div>
     """, unsafe_allow_html=True)
     
-    # Soru detayları (Beyaz yazılar için özel CSS uygulanmış expanderlar)
-    for i, item in enumerate(st.session_state.user_answers):
-        icon = "✅" if item["res"] else "❌"
-        with st.expander(f"Soru {i+1}: {icon}"):
-            st.markdown(f"<span style='color: white;'><b>Soru:</b> {item['q']}</span>", unsafe_allow_html=True)
-            st.markdown(f"<span style='color: white;'><b>Cevabın:</b> {item['u_ans']}</span>", unsafe_allow_html=True)
-            if not item["res"]:
-                st.markdown(f"<span style='color: #2ecc71;'><b>Doğru Cevap:</b> {item['c_ans']}</span>", unsafe_allow_html=True)
+    # Sadece Yanlışları Göster (Filtering)
+    wrongs = [item for item in st.session_state.user_answers if not item["res"]]
+    
+    if not wrongs:
+        st.success("Tebrikler! Hiç yanlışınız yok. Tüm soruları doğru yanıtladınız! ✅")
+    else:
+        for i, item in enumerate(wrongs):
+            with st.expander(f"❌ Yanlış Yapılan Soru {i+1}"):
+                st.markdown(f"<p style='color: white;'><b>Soru:</b> {item['q']}</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: #ff7675;'><b>Senin Cevabın:</b> {item['u_ans']}</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: #55efc4;'><b>Doğru Cevap:</b> {item['c_ans']}</p>", unsafe_allow_html=True)
 
     if st.button("🔄 Yeniden Başla"):
         start_fresh()
