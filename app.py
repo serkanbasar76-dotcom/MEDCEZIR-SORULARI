@@ -7,7 +7,7 @@ RAW_QUESTIONS = [
     {"question": "Ay ve güneş dünyaya göre 90˚ doğrultuda bulunduğunda hangi gelgit oluşur?", "options": ["Mixed Tide", "Spring Tide", "Neap Tide", "Semidiurnal Tide"], "answer_index": 2},
     {"question": "Ay kendi ekseni etrafında dönüşünü (bir ay günü) ne kadar sürede tamamlar?", "options": ["12 saat 25 dakika", "24 saat 00 dakika", "23 saat 56 dakika", "24 saat 50 dakika"], "answer_index": 3},
     {"question": "Bir ay günü içerisinde bir defa yükselme ve bir defa alçalmanın yaşandığı gelgit tipi nedir?", "options": ["Diurnal Tide (Günlük)", "Semidiurnal Tide (Yarım günlük)", "Mixed Tide (Karışık)", "Spring Tide"], "answer_index": 0},
-    {"question": "Bir ay günü içerisinde iki defa yükselme ve iki defa alçalma yaşanıyorsa bu hangisidir?", "options": ["Spring Tide", "Semidiurnal Tide", "Neap Tide", "Diurnal Tide"], "answer_index": 1},
+    {"question": "Bir ay günü içerisinde iki defa yükselme ve iki defaalçalmanın yaşandığı gelgit tipi nedir?", "options": ["Spring Tide", "Semidiurnal Tide", "Neap Tide", "Diurnal Tide"], "answer_index": 1},
     {"question": "Bir ay günü içerisinde düzensizliklerin yaşandığı gelgitler hangi adla anılır?", "options": ["Slack Water", "Semidiurnal Tide", "Mixed Tide", "Neap Tide"], "answer_index": 2},
     {"question": "Spring Tide için aşağıdakilerden hangisi doğrudur?", "options": ["Zayıf gelgitler olur.", "Kuvvetli gelgitler olur.", "Sadece kutuplarda görülür.", "Ay ve güneş 90 derece açıdadır."], "answer_index": 1},
     {"question": "Ay, Güneş ve Dünya’nın aynı doğrultuda bulunduğu gelgit evresi hangisidir?", "options": ["Spring Tide", "Neap Tide", "Mixed Tide", "Diurnal Tide"], "answer_index": 0},
